@@ -429,7 +429,7 @@ body.show-chatbot .chatbot {
 }
 
 /* Responsive for Mobile */
-@media (max-width: 480px) {
+@media (max-width: 910px) {
   /* Header: compact, logo + title horizontal */
   header {
     flex-direction: row;
