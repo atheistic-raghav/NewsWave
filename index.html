@@ -4,23 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>NewsWave</title>
-  <!-- Font Awesome & Material Icons -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    integrity="sha512-Fo3rlrZj/k7ujTnH1zZ6a7rYh9t+6I4upNJEk9eV+PcNB2h1fOxckMdKCJoRJMM0qLBzQ5u6YG6Q6ulywHdqcw=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&display=swap"
-  />
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0&display=swap"
-  />
+  <!-- Font Awesome (removed integrity and crossorigin for simplicity) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0&display=swap" />
   <link rel="stylesheet" href="styles.css" />
+  <!-- Optional: Set base URL if deploying to a subdirectory -->
+  <!-- <base href="/repo-name/"> -->
 </head>
 <body>
   <header>
@@ -50,13 +40,11 @@
 
   <main id="news-content"></main>
 
-  <!-- Chatbot Toggle -->
   <button class="chatbot-toggler">
     <span class="icon-open material-symbols-rounded">mode_comment</span>
     <span class="icon-close material-symbols-outlined">close</span>
   </button>
 
-  <!-- Chatbot Panel -->
   <div class="chatbot">
     <header>
       <img src="images/bot-logo.png" alt="WaveBot" class="bot-logo" />
@@ -87,7 +75,7 @@
     </div>
     <div class="contact">
       <p>Contact Us:</p>
-      <p>Email: contact@newswave.com</p>
+      <p>Email: <a href="mailto:contact@newswave.com">contact@newswave.com</a></p>
       <p>Phone: +91 78912 37890</p>
     </div>
     <div class="links">
