@@ -1,67 +1,66 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const apiKey = "619659e2cd0b47a4b2b1066e1bbcc80a"; // Ensure this key is valid
+  const apiKey = "619659e2cd0b47a4b2b1066e1bbcc80a";
   const apiUrl = "https://newsapi.org/v2/top-headlines";
+  const proxy = "https://api.allorigins.win/raw?url=";
   const defaultCategory = "general";
   const newsContent = document.getElementById("news-content");
 
-  // Fetch articles with error handling
+  // Detect localhost vs deployed origin
+  const isLocal = 
+    location.hostname === "localhost" || 
+    location.hostname === "127.0.0.1";
+
   async function fetchNews(category) {
     try {
-      const res = await fetch(
-        `${apiUrl}?category=${category}&language=en&apiKey=${apiKey}`
-      );
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
+      const url = `${apiUrl}?category=${category}&language=en&apiKey=${apiKey}`;
+      const fetchUrl = isLocal ? url : proxy + encodeURIComponent(url);
+      const res = await fetch(fetchUrl);
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const data = await res.json();
       return data.articles || [];
     } catch (error) {
       console.error("Failed to fetch news:", error);
-      return []; // Return empty array on failure
+      return [];
     }
   }
 
-  // Render news with fallback
   function displayNews(articles) {
     newsContent.innerHTML = "";
-    if (!articles || articles.length === 0) {
+    if (!articles.length) {
       newsContent.innerHTML = "<p>No news articles available at this time.</p>";
       return;
     }
-    articles
-      .filter((a) => a.urlToImage) // Only articles with images
-      .forEach((article) => {
-        const el = document.createElement("article");
-        el.innerHTML = `
-          <div class="article-thumbnail">
-            <img src="${article.urlToImage}" alt="" />
-          </div>
-          <div class="article-details">
-            <h2>${article.title}</h2>
-            <p>${article.description || ""}</p>
-            <a href="${article.url}" target="_blank">Read more</a>
-          </div>
-        `;
-        newsContent.appendChild(el);
-      });
+    articles.filter(a => a.urlToImage).forEach(article => {
+      const el = document.createElement("article");
+      el.innerHTML = `
+        <div class="article-thumbnail">
+          <img src="${article.urlToImage}" alt="" />
+        </div>
+        <div class="article-details">
+          <h2>${article.title}</h2>
+          <p>${article.description || ""}</p>
+          <a href="${article.url}" target="_blank">Read more</a>
+        </div>
+      `;
+      newsContent.appendChild(el);
+    });
   }
 
-  // Navigation and active link
   const navLinks = document.querySelectorAll("nav a");
   document.getElementById("category-general").classList.add("active");
   fetchNews(defaultCategory).then(displayNews);
 
-  navLinks.forEach((link) => {
-    link.addEventListener("click", (e) => {
+  navLinks.forEach(link => {
+    link.addEventListener("click", e => {
       e.preventDefault();
-      navLinks.forEach((l) => l.classList.remove("active"));
+      navLinks.forEach(l => l.classList.remove("active"));
       link.classList.add("active");
       const cat = link.id.replace("category-", "");
       fetchNews(cat).then(displayNews);
     });
   });
 
-  // Chatbot toggle logic
+  // Chatbot toggle
   const chatTog = document.querySelector(".chatbot-toggler");
   const closeBtn = document.querySelector(".close-btn");
   chatTog.addEventListener("click", () =>
@@ -93,15 +92,15 @@ document.addEventListener("DOMContentLoaded", () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer YOUR_OPENAI_KEY`, // Replace with your OpenAI key
+        Authorization: `Bearer YOUR_OPENAI_KEY`,
       },
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [{ role: "user", content: userMessage }],
       }),
     })
-      .then((r) => r.json())
-      .then((data) => {
+      .then(r => r.json())
+      .then(data => {
         const resp = data.choices[0].message.content.trim();
         chatbox.appendChild(createChatLi(resp, "incoming"));
         chatbox.scrollTop = chatbox.scrollHeight;
